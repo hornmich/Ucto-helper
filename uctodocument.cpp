@@ -37,9 +37,21 @@ bool UctoDocument::loadDocument(const QString &fileName)
     return true;
 }
 
-int UctoDocument::findLine(const QString &regExp) const
+int UctoDocument::findLine(const QString &regExpStr) const
 {
+    if (mPageLoaded) {
+        QRegExp regexp;
+        regexp.setPattern(regExpStr);
 
+        for (int i = 0; i < mLines.count(); i++) {
+            int pos = 0;
+            QString line = mLines.at(i);
+            if (regexp.indexIn(line, pos, regexp.CaretAtZero) != -1) {
+                return i;
+            }
+        }
+    }
+    return -1;
 }
 
 bool UctoDocument::setLine(int numLine, const QString &lineStr)

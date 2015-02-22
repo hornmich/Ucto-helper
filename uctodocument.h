@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QFile>
 #include <QTextStream>
+#include <QRegExp>
 
 class UctoDocument
 {
@@ -18,7 +19,7 @@ public:
     UctoDocument(const UctoDocument &doc);
 
     bool loadDocument(const QString &fileName);
-    int findLine(const QString &regExp) const;
+    int findLine(const QString &regExpStr) const;
     bool setLine(int numLine, const QString &lineStr);
     QString getLine(int numLine) const;
     QVector<QString> getLines(QVector<QString> &dest) const;

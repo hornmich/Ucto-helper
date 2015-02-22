@@ -15,6 +15,14 @@ int main(int argc, char *argv[])
         std::cout << "File " << fileName.toStdString() << " loaded.\n";
         std::cout << "\t Numlines: " << doc.getNumLines() << "\n";
         std::cout << "\t line 3: " << doc.getLine(3).toStdString() << "\n";
+        int line = doc.findLine("za obdob.");
+        if (line == -1) {
+            std::cout << "string not found." << std::endl;
+        }
+        else {
+            std::cout << "String found in line " << line << std::endl;
+        }
+
     }
     else {
         std::cerr << "File loading: " << fileName.toStdString() << "failed.\n";
