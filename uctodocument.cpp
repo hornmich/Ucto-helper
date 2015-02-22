@@ -2,14 +2,14 @@
 
 UctoDocument::UctoDocument()
 {
-    mPages = QVector<QString>();
+    mLines = QVector<QString>();
     mPageLoaded = false;
     mFileName = QString();
 }
 
 UctoDocument::UctoDocument(const UctoDocument &doc)
 {
-    mPages = doc.getPages(mPages);
+    mLines = doc.getLines(mLines);
     mPageLoaded = doc.isLoaded();
     mFileName = doc.getFileName();
 }
@@ -17,7 +17,7 @@ UctoDocument::UctoDocument(const UctoDocument &doc)
 bool UctoDocument::loadDocument(const QString &fileName)
 {
     if (mPageLoaded) {
-        mPages.clear();
+        mLines.clear();
         mPageLoaded = false;
         mFileName.clear();
     }
@@ -29,7 +29,7 @@ bool UctoDocument::loadDocument(const QString &fileName)
     QTextStream in(&file);
     while (!in.atEnd()) {
         QString line = in.readLine();
-        mPages.append(line);
+        mLines.append(line);
     }
     file.close();
     mPageLoaded = true;
@@ -44,8 +44,8 @@ int UctoDocument::findLine(const QString &regExp) const
 
 bool UctoDocument::setLine(int numLine, const QString &lineStr)
 {
-    if (mPageLoaded && numLine > 0 && numLine < mPages.size()) {
-        mPages.replace(numLine, lineStr);
+    if (mPageLoaded && numLine > 0 && numLine < mLines.size()) {
+        mLines.replace(numLine, lineStr);
         return true;
     }
     else {
@@ -55,22 +55,22 @@ bool UctoDocument::setLine(int numLine, const QString &lineStr)
 
 QString UctoDocument::getLine(int numLine) const
 {
-    if (mPageLoaded && numLine > 0 && numLine < mPages.size()) {
-        return mPages.at(numLine);
+    if (mPageLoaded && numLine > 0 && numLine < mLines.size()) {
+        return mLines.at(numLine);
     }
     else {
         return "empty line";
     }
 }
 
-QVector<QString> UctoDocument::getPages(QVector<QString> &dest) const
+QVector<QString> UctoDocument::getLines(QVector<QString> &dest) const
 {
 
 }
 
-int UctoDocument::getNumPages() const
+int UctoDocument::getNumLines() const
 {
-    return mPages.size();
+    return mLines.size();
 }
 
 QString UctoDocument::getFileName() const
@@ -85,7 +85,7 @@ bool UctoDocument::isLoaded() const
 
 UctoDocument::~UctoDocument()
 {
-    mPages.clear();
+    mLines.clear();
     mFileName.clear();
 }
 

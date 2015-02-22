@@ -9,7 +9,7 @@
 class UctoDocument
 {
 private:
-    QVector<QString> mPages;
+    QVector<QString> mLines;
     bool mPageLoaded;
     QString mFileName;
 
@@ -21,8 +21,8 @@ public:
     int findLine(const QString &regExp) const;
     bool setLine(int numLine, const QString &lineStr);
     QString getLine(int numLine) const;
-    QVector<QString> getPages(QVector<QString> &dest) const;
-    int getNumPages() const;
+    QVector<QString> getLines(QVector<QString> &dest) const;
+    int getNumLines() const;
     QString getFileName() const;
     bool isLoaded() const;
 
