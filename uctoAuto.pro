@@ -16,7 +16,9 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    uctodocument.cpp
+    uctodocument.cpp \
+    billingperiod.cpp
 
 HEADERS += \
-    uctodocument.h
+    uctodocument.h \
+    billingperiod.h
