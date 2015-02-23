@@ -27,6 +27,7 @@ bool UctoDocument::loadDocument(const QString &fileName)
         return false;
 
     QTextStream in(&file);
+    in.setCodec("Windows-1250");
     while (!in.atEnd()) {
         QString line = in.readLine();
         mLines.append(line);
