@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     QString lineBPerMonthsStr = doc.getLine(lineBPerMonthsDest);
-    lineBPerMonthsStr.replace("...........",bPeriod.startMonthStr() + " - " + bPeriod.endMonthStr());
+    lineBPerMonthsStr.replace("...........","   " + bPeriod.startMonthStr() + " - " + bPeriod.endMonthStr() + "  ");
     doc.setLine(lineBPerMonthsDest, lineBPerMonthsStr);
 
     printDoc(doc, 0, doc.getNumLines());
