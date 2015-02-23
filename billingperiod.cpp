@@ -32,6 +32,43 @@ unsigned short BillingPeriod::endYear() const
     return mEndYear;
 }
 
+QString BillingPeriod::startDayStr() const
+{
+    QString num;
+    return num.number(mStartDay);
+}
+
+QString BillingPeriod::startMonthStr() const
+{
+    QString num;
+    return num.number(mStartMonth);
+}
+
+QString BillingPeriod::startYearStr() const
+{
+    QString num;
+    return num.number(mStartYear);
+}
+
+QString BillingPeriod::endDayStr() const
+{
+    QString num;
+    return num.number(mEndDay);
+}
+
+QString BillingPeriod::endMonthStr() const
+{
+    QString num;
+    return num.number(mEndMonth);
+}
+
+QString BillingPeriod::endYearStr() const
+{
+    QString num;
+    return num.number(mEndYear);
+}
+
+
 bool BillingPeriod::isPeriodFound() const
 {
     return mPeriodFound;

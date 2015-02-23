@@ -26,6 +26,12 @@ public:
     unsigned short endDay() const;
     unsigned short endMonth() const;
     unsigned short endYear() const;
+    QString startDayStr() const;
+    QString startMonthStr() const;
+    QString startYearStr() const;
+    QString endDayStr() const;
+    QString endMonthStr() const;
+    QString endYearStr() const;
     bool isPeriodFound() const;
 };
 
