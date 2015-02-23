@@ -13,6 +13,15 @@ bool askForPayerSignature() {
     return (response == 'a') ? true : false;
 }
 
+void printDoc(const UctoDocument &doc, int start, int end) {
+    if (end > doc.getNumLines()) {
+        end = doc.getNumLines();
+    }
+    for (int i = start; i < end; i++) {
+        std::cout << doc.getLine(i).toStdString() << std::endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -32,14 +41,14 @@ int main(int argc, char *argv[])
 
     bool payerSigned = askForPayerSignature();
 
-    int line = doc.findLine("za obdob.");
-    if (line == -1) {
+    int lineBPeriodSource = doc.findLine("za obdob.");
+    if (lineBPeriodSource == -1) {
         std::cout << "Zuctovaci obdobi nenalezeno" << std::endl;
         return 1;
     }
 
-    std::cout << "Zuctovaci obdobi na radce " << line << std::endl;
-    if (!bPeriod.findPeriod(doc.getLine(line))) {
+    std::cout << "Zuctovaci obdobi na radce " << lineBPeriodSource << std::endl;
+    if (!bPeriod.findPeriod(doc.getLine(lineBPeriodSource))) {
         std::cerr << "Zuctovaci obdobi nenalezeno." << std::endl;
         return 1;
     }
@@ -51,6 +60,44 @@ int main(int argc, char *argv[])
         std::cout << bPeriod.startYear();
     }
     std::cout << std::endl << "Mesice: " << bPeriod.startMonth() << " - " << bPeriod.endMonth() << std::endl;
+
+
+    int linePayerSigned = doc.findLine("podepsal/nepodepsal");
+    if (linePayerSigned == -1) {
+        std::cout << "Poplatnik podepsal/nepodepsal ... nenalezeno." << std::endl;
+        return 1;
+    }
+
+    QString linePayerSignedStr = doc.getLine(linePayerSigned);
+    linePayerSignedStr.replace("podepsal/nepodepsal", (payerSigned) ? "     podepsal      " : "    nepodepsal     ");
+    doc.setLine(linePayerSigned, linePayerSignedStr);
+
+    int lineBPerYearDest = doc.findLine("prohl..en. - na zda.ovac. obdob.");
+    if (lineBPerYearDest == -1) {
+        std::cout << "Kolonka zdanovaci obdobi na rok nenalezena." << std::endl;
+        return 1;
+    }
+
+    QString lineBPerYearStr = doc.getLine(lineBPerYearDest);
+    if (bPeriod.startYear() != bPeriod.endYear()) {
+        lineBPerYearStr.replace(" ........... ",bPeriod.startYearStr() + (QString)("-") + bPeriod.endYearStr());
+    }
+    else {
+        lineBPerYearStr.replace("...........", (QString)("    ") + bPeriod.startYearStr() + (QString)("   "));
+    }
+    doc.setLine(lineBPerYearDest, lineBPerYearStr);
+
+
+    int lineBPerMonthsDest = doc.findLine("na tyto m.s.ce zda.ovac.ho obdob.");
+    if (lineBPerMonthsDest == -1) {
+        std::cout << "Kolonka zdanovaci obdobi mesice nenalezena." << std::endl;
+        return 1;
+    }
+    QString lineBPerMonthsStr = doc.getLine(lineBPerMonthsDest);
+    lineBPerMonthsStr.replace("...........",bPeriod.startMonthStr() + " - " + bPeriod.endMonthStr());
+    doc.setLine(lineBPerMonthsDest, lineBPerMonthsStr);
+
+    printDoc(doc, 0, doc.getNumLines());
 
     return 0;
 }
