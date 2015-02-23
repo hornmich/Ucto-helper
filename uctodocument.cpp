@@ -21,6 +21,7 @@ bool UctoDocument::loadDocument(const QString &fileName)
         mPageLoaded = false;
         mFileName.clear();
     }
+
     mFileName = fileName;
     QFile file(mFileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -94,6 +95,26 @@ QString UctoDocument::getFileName() const
 bool UctoDocument::isLoaded() const
 {
     return mPageLoaded;
+}
+
+bool UctoDocument::saveDocument(const QString &fileName) const
+{
+    if (!mPageLoaded) {
+        return false;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+    QTextStream out(&file);
+    out.setCodec("Windows-1250");
+    for (int i = 0; i < getNumLines(); i++) {
+        out << getLine(i) << "\r\n";
+    }
+
+    file.close();
+    return true;
 }
 
 UctoDocument::~UctoDocument()

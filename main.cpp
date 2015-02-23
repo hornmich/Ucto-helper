@@ -99,5 +99,14 @@ int main(int argc, char *argv[])
 
     printDoc(doc, 0, doc.getNumLines());
 
+    if (doc.saveDocument("out.html")) {
+        std::cout << "File saved." << std::endl;
+    }
+    else {
+        std::cerr << "File saving failed." << std::endl;
+        return 1;
+    }
+
+
     return 0;
 }

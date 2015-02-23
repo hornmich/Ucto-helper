@@ -26,6 +26,7 @@ public:
     int getNumLines() const;
     QString getFileName() const;
     bool isLoaded() const;
+    bool saveDocument(const QString &fileName) const;
 
     ~UctoDocument();
 };
