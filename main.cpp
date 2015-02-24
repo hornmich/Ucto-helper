@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <uctodocument.h>
 #include <billingperiod.h>
+#include <uctohelper.h>
 #include <iostream>
 
 bool askForPayerSignature() {
@@ -22,91 +23,57 @@ void printDoc(const UctoDocument &doc, int start, int end) {
     }
 }
 
+bool setSignature(const UctoDocument &doc, bool payerSigned) {
+
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-
-    UctoDocument doc;
-    BillingPeriod bPeriod;
-    QString fileName;
-
-    fileName = QString("pokus.txt");
-    if (!doc.loadDocument(fileName)) {
-        std::cerr << "File loading: " << fileName.toStdString() << "failed.\n";
-        return 1;
-    }
-    std::cout << "File " << fileName.toStdString() << " loaded.\n";
-    std::cout << "\t Numlines: " << doc.getNumLines() << "\n";
-    std::cout << "\t line 3: " << doc.getLine(3).toStdString() << "\n";
+    QString inFileName;
+    QString outFileName;
+    UctoHelper ucto;
+    inFileName = QString("pokus.txt");
+    outFileName = QString("out.html");
 
     bool payerSigned = askForPayerSignature();
 
-    int lineBPeriodSource = doc.findLine("za obdob.");
-    if (lineBPeriodSource == -1) {
-        std::cout << "Zuctovaci obdobi nenalezeno" << std::endl;
+    if (!ucto.openFile(inFileName)) {
+        std::cerr << "Document could not be loaded." << std::endl;
         return 1;
     }
+    std::cout << "Document loaded..." << std::endl;
 
-    std::cout << "Zuctovaci obdobi na radce " << lineBPeriodSource << std::endl;
-    if (!bPeriod.findPeriod(doc.getLine(lineBPeriodSource))) {
-        std::cerr << "Zuctovaci obdobi nenalezeno." << std::endl;
+    if (!ucto.retrieveBillinPeriod()) {
+        std::cerr << "Billing periot could not be retrieved from the document." << std::endl;
         return 1;
     }
-    std::cout << "Zdanovaci obdobi: ";
-    if (bPeriod.startYear() != bPeriod.endYear()) {
-        std::cout << bPeriod.startYear() << " - " << bPeriod.endYear();
-    }
-    else {
-        std::cout << bPeriod.startYear();
-    }
-    std::cout << std::endl << "Mesice: " << bPeriod.startMonth() << " - " << bPeriod.endMonth() << std::endl;
+    std::cout << "Billing period found..." << std::endl;
 
-
-    int linePayerSigned = doc.findLine("podepsal/nepodepsal");
-    if (linePayerSigned == -1) {
-        std::cout << "Poplatnik podepsal/nepodepsal ... nenalezeno." << std::endl;
+    if (!ucto.modifySignature(payerSigned)) {
+        std::cerr << "Signature could not be modified." << std::endl;
         return 1;
     }
+    std::cout << "Signature changed..." << std::endl;
 
-    QString linePayerSignedStr = doc.getLine(linePayerSigned);
-    linePayerSignedStr.replace("podepsal/nepodepsal", (payerSigned) ? "     podepsal      " : "    nepodepsal     ");
-    doc.setLine(linePayerSigned, linePayerSignedStr);
-
-    int lineBPerYearDest = doc.findLine("prohl..en. - na zda.ovac. obdob.");
-    if (lineBPerYearDest == -1) {
-        std::cout << "Kolonka zdanovaci obdobi na rok nenalezena." << std::endl;
+    if (!ucto.includeBillingPeriodMonths()) {
+        std::cerr << "Billing period - months could not be included in the document." << std::endl;
         return 1;
     }
+    std::cout << "Billing period - months added..." << std::endl;
 
-    QString lineBPerYearStr = doc.getLine(lineBPerYearDest);
-    if (bPeriod.startYear() != bPeriod.endYear()) {
-        lineBPerYearStr.replace(" ........... ",bPeriod.startYearStr() + (QString)("-") + bPeriod.endYearStr());
-    }
-    else {
-        lineBPerYearStr.replace("...........", (QString)("    ") + bPeriod.startYearStr() + (QString)("   "));
-    }
-    doc.setLine(lineBPerYearDest, lineBPerYearStr);
-
-
-    int lineBPerMonthsDest = doc.findLine("na tyto m.s.ce zda.ovac.ho obdob.");
-    if (lineBPerMonthsDest == -1) {
-        std::cout << "Kolonka zdanovaci obdobi mesice nenalezena." << std::endl;
+    if (!ucto.includeBillingPeriodYear()) {
+        std::cerr << "Billing period - year could not be included in the document." << std::endl;
         return 1;
     }
-    QString lineBPerMonthsStr = doc.getLine(lineBPerMonthsDest);
-    lineBPerMonthsStr.replace("...........","   " + bPeriod.startMonthStr() + " - " + bPeriod.endMonthStr() + "  ");
-    doc.setLine(lineBPerMonthsDest, lineBPerMonthsStr);
+    std::cout << "Billing period - year added..." << std::endl;
 
-    printDoc(doc, 0, doc.getNumLines());
-
-    if (doc.saveDocument("out.html")) {
-        std::cout << "File saved." << std::endl;
-    }
-    else {
+    if (!ucto.saveFile(outFileName)) {
         std::cerr << "File saving failed." << std::endl;
         return 1;
     }
-
+    std::cout << "Modified document saved..." << std::endl;
+    std::cout << "Done" << std::endl;
 
     return 0;
 }
