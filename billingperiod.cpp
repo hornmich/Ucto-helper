@@ -1,7 +1,5 @@
 #include "billingperiod.h"
 
-const char* BillingPeriod::TAG = "BillingPeriod";
-
 unsigned short BillingPeriod::startDay() const
 {
     return mStartDay;
@@ -105,7 +103,7 @@ bool BillingPeriod::findPeriod(const QString &source, const QString &dayRegExpSt
             dayIndex2 == -1 ||
             monthIndex2 == -1 ||
             yearIndex2 == -1) {
-        std::cerr << TAG << ": Regular expression did not match." << std::endl;
+        std::cerr << "BillingPeriod.findPeriod: Regular expression did not match for " << source.toStdString() << "." << std::endl;
         mPeriodFound = false;
         return false;
     }
@@ -123,7 +121,7 @@ bool BillingPeriod::findPeriod(const QString &source, const QString &dayRegExpSt
             endDayStr == NULL ||
             endMonthStr == NULL ||
             endYearStr == NULL) {
-        std::cerr << TAG << ": Substring extraction failed." << std::endl;
+        std::cerr << "BillingPeriod.findPeriod: Substring extraction failed for " << source.toStdString() << "." << std::endl;
         mPeriodFound = false;
         return false;
     }
@@ -137,7 +135,7 @@ bool BillingPeriod::findPeriod(const QString &source, const QString &dayRegExpSt
     mEndYear = endYearStr.toInt(&strToIntOK);
 
     if (strToIntOK == false) {
-        std::cerr << TAG << ": String to Integer conversion failed." << std::endl;
+        std::cerr << "BillingPeriod.findPeriod: String to Integer conversion failed for " << source.toStdString() << "." << std::endl;
         mPeriodFound = false;
         return false;
     }

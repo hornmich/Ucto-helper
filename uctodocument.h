@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QRegExp>
+#include <iostream>
 
 class UctoDocument
 {

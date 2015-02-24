@@ -8,7 +8,6 @@
 class BillingPeriod
 {
 private:
-    static const char* TAG;
     unsigned short mStartDay;
     unsigned short mStartMonth;
     unsigned short mStartYear;
