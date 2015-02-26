@@ -40,7 +40,7 @@ UctoHelper::UctoHelper()
 bool UctoHelper::openFile(const QString &fileName)
 {
     if (!mDocument.loadDocument(fileName)) {
-        std::cerr << "File loading: " << fileName.toStdString() << "failed.\n";
+        std::cerr << "File loading: " << fileName.toStdString() << " failed.\n";
         return false;
     }
     return true;

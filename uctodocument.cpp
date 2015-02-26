@@ -24,9 +24,10 @@ bool UctoDocument::loadDocument(const QString &fileName)
 
     mFileName = fileName;
     QFile file(mFileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         std::cerr << "UctoDocument.loadDocument: Error while openning file " << fileName.toStdString() << ": " << file.errorString().toStdString() << std::endl;
         return false;
+    }
 
     QTextStream in(&file);
     in.setCodec("Windows-1250");
