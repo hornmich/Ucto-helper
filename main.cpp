@@ -23,10 +23,6 @@ void printDoc(const UctoDocument &doc, int start, int end) {
     }
 }
 
-bool setSignature(const UctoDocument &doc, bool payerSigned) {
-
-}
-
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
