@@ -100,7 +100,7 @@ QString UctoDocument::getLine(int numLine) const
 /* TODO: implement */
 QVector<QString> UctoDocument::getLines(QVector<QString> &dest) const
 {
-
+    return mLines;
 }
 
 int UctoDocument::getNumLines() const
