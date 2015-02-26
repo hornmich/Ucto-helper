@@ -155,64 +155,69 @@ bool UctoHelper::modifySignature(bool payerSigned)
     return true;
 }
 
-BillingPeriod *UctoHelper::getBillingPeriod() const
-{
-
-}
-
 void UctoHelper::setSignaturePattern(const QString &pattern)
 {
-
+    mPatternSignature = pattern;
 }
 
 void UctoHelper::setBillingPeriodSourcePattern(const QString &pattern)
 {
-
+    mPatternBillPerSource = pattern;
 }
 
 void UctoHelper::setBillingPeriodDaySourcePattern(const QString &pattern)
 {
-
+    mPatternBillPerDaySource = pattern;
 }
 
 void UctoHelper::setBillingPeriodMonthSourcePattern(const QString &pattern)
 {
-
+    mPatternBillPerMonthSource = pattern;
 }
 
 void UctoHelper::setBillingPeriodYearSourcePattern(const QString &pattern)
 {
-
+    mPatternBillPerYearSource = pattern;
 }
 
 void UctoHelper::setBillingPeriodYearDestinationPattern(const QString &pattern)
 {
-
+    mPatternBillPerYearDest = pattern;
 }
 
 void UctoHelper::setBillingPeriodMonthsDestionationPattern(const QString &pattern)
 {
-
+    mPatternBillPerMonthsDest = pattern;
 }
 
 void UctoHelper::setBillingPeriodMonthsLinePattern(const QString &pattern)
 {
-
+    mPatternBillPerMonthsLine = pattern;
 }
 
 void UctoHelper::setBillingPeriodYearLinePattern(const QString &pattern)
 {
-
+    mPatternBillPerYearLine = pattern;
 }
 
 void UctoHelper::setSignedText(const QString &signedStr)
 {
-
+    mSignedText = signedStr;
 }
 
 void UctoHelper::setNotSignedText(const QString &notSignedStr)
 {
+    mNotSignedText = notSignedStr;
+}
 
+UctoDocument UctoHelper::getDocument() const
+{
+    return mDocument;
+}
+
+BillingPeriod UctoHelper::getBillingPeriod() const
+{
+    return mBillingPeriod;
 }
 
 UctoHelper::~UctoHelper()

@@ -33,7 +33,6 @@ public:
     bool includeBillingPeriodYear();
     bool includeBillingPeriodMonths();
     bool modifySignature(bool payerSigned);
-    BillingPeriod* getBillingPeriod() const;
     void setSignaturePattern(const QString &pattern);
     void setBillingPeriodSourcePattern(const QString &pattern);
     void setBillingPeriodDaySourcePattern(const QString &pattern);
@@ -45,6 +44,8 @@ public:
     void setBillingPeriodYearLinePattern(const QString &pattern);
     void setSignedText(const QString &signedStr);
     void setNotSignedText(const QString &notSignedStr);
+    UctoDocument getDocument() const;
+    BillingPeriod getBillingPeriod() const;
     ~UctoHelper();
 };
 
