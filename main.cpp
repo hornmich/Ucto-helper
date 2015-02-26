@@ -45,6 +45,10 @@ int main(int argc, char *argv[])
         return 1;
     }
     std::cout << "Billing period found..." << std::endl;
+    BillingPeriod bPeriod = ucto.getBillingPeriod();
+    std::cout << bPeriod.startDay() << "." << bPeriod.startMonth() << "." << bPeriod.startYear() << " - "
+              << bPeriod.endDay() << "." << bPeriod.endMonth() << "." << bPeriod.endYear() << std::endl;
+
 
     if (!ucto.modifySignature(payerSigned)) {
         std::cerr << "Signature could not be modified." << std::endl;
