@@ -77,6 +77,17 @@ BillingPeriod::BillingPeriod()
     mPeriodFound = false;
 }
 
+BillingPeriod::BillingPeriod(const BillingPeriod &bp)
+{
+    mPeriodFound = bp.mPeriodFound;
+    mStartDay = bp.mStartDay;
+    mStartMonth = bp.mStartMonth;
+    mStartYear = bp.mStartYear;
+    mEndDay = bp.mEndDay;
+    mEndMonth = mEndMonth;
+    mEndYear = mEndYear;
+}
+
 BillingPeriod::~BillingPeriod()
 {
 

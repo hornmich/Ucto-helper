@@ -17,6 +17,7 @@ private:
     bool mPeriodFound;
 public:
     BillingPeriod();
+    BillingPeriod(const BillingPeriod &bp);
     ~BillingPeriod();
     bool findPeriod(const QString &source, const QString &dayRegExpStr = "\\d{2}\\.", const QString &monthRegExpStr = "\\d{2}\\.", const QString &yearRegExpStr = "\\d{4}");
     unsigned short startDay() const;
