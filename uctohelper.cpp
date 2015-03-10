@@ -67,7 +67,6 @@ bool UctoHelper::retrieveBillinPeriod()
         std::cerr << "Billing period pattern not found in the document." << std::endl;
         return false;
     }
-    std::cout << "Billing period: " << mBillingPeriod.startDay() << "." << mBillingPeriod.startMonth() << "." << mBillingPeriod.startYear() << " - " << mBillingPeriod.endDay() << "." << mBillingPeriod.endMonth() << "." << mBillingPeriod.endYear() << std::endl;
     return true;
 }
 
