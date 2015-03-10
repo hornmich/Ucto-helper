@@ -85,7 +85,7 @@ bool UctoDocument::setLine(int numLine, const QString &lineStr)
 QString UctoDocument::getLine(int numLine) const
 {
     if (mPageLoaded) {
-        if (numLine > 0 && numLine < mLines.size()) {
+        if (numLine >= 0 && numLine < mLines.size()) {
             return mLines.at(numLine);
         }
         else {
