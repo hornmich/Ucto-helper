@@ -84,8 +84,8 @@ BillingPeriod::BillingPeriod(const BillingPeriod &bp)
     mStartMonth = bp.mStartMonth;
     mStartYear = bp.mStartYear;
     mEndDay = bp.mEndDay;
-    mEndMonth = mEndMonth;
-    mEndYear = mEndYear;
+    mEndMonth = bp.mEndMonth;
+    mEndYear = bp.mEndYear;
 }
 
 BillingPeriod::~BillingPeriod()
