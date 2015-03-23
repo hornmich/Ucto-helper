@@ -2,6 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QString>
+#include <QtPrintSupport/QPrinter>
+#include <QPrintDialog>
+#include "../common/uctohelper.h"
+#include <QWebSettings>
+
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +24,17 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    UctoHelper uHelper;
+    UctoHelper uHelperModified;
+    void changeSignature(bool isSigned);
+
+public slots:
+    void openFile();
+    void setSigned();
+    void setNotSigned();
+    void saveAsPdf();
+    void saveAsHtml();
+    void print();
 };
 
 #endif // MAINWINDOW_H
