@@ -16,11 +16,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    uctodocument.cpp \
-    billingperiod.cpp \
-    uctohelper.cpp
+    ../common/uctodocument.cpp \
+    ../common/billingperiod.cpp \
+    ../common/uctohelper.cpp
 
 HEADERS += \
-    uctodocument.h \
-    billingperiod.h \
-    uctohelper.h
+    ../common/uctodocument.h \
+    ../common/billingperiod.h \
+    ../common/uctohelper.h

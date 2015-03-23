@@ -1,8 +1,8 @@
 #ifndef UCTOHELPER_H
 #define UCTOHELPER_H
 
-#include <uctodocument.h>
-#include <billingperiod.h>
+#include "uctodocument.h"
+#include "billingperiod.h"
 #include <QString>
 
 class UctoHelper

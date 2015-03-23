@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include <uctodocument.h>
-#include <billingperiod.h>
-#include <uctohelper.h>
+#include "../common/uctodocument.h"
+#include "../common/billingperiod.h"
+#include "../common/uctohelper.h"
 #include <iostream>
 
 #define SUCCESS 0
