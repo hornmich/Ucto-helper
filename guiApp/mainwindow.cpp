@@ -23,19 +23,21 @@ MainWindow::~MainWindow()
 void MainWindow::openFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Otevrit formular"), "/home/", tr("Ucto HTML (*.html *.htm)"));
-    if (!uHelper.openFile(fileName)) {
-        std::cerr << "File: " << fileName.toStdString() << " could not be opened." << std::endl;
-    }
-    else {
-        ui->btnPrint->setEnabled(true);
-        ui->btnSave->setEnabled(true);
-        ui->btnSaveAsPDF->setEnabled(true);
-        ui->webView->setEnabled(true);
-        ui->rbNotSigned->setEnabled(true);
-        ui->rbSigned->setEnabled(true);
+        tr("Otevrit formular"), QDir::homePath(), tr("Ucto HTML (*.html *.htm)"));
+    if (fileName != "") {
+        if (!uHelper.openFile(fileName)) {
+            std::cerr << "File: " << fileName.toStdString() << " could not be opened." << std::endl;
+        }
+        else {
+            ui->btnPrint->setEnabled(true);
+            ui->btnSave->setEnabled(true);
+            ui->btnSaveAsPDF->setEnabled(true);
+            ui->webView->setEnabled(true);
+            ui->rbNotSigned->setEnabled(true);
+            ui->rbSigned->setEnabled(true);
 
-        setNotSigned();
+            ui->rbNotSigned->click();
+        }
     }
 }
 
@@ -53,24 +55,31 @@ void MainWindow::saveAsPdf()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Ulozit jako PDF"), "/home/", tr("PDF file (*.pdf)"));
-    QPrinter printer;
-    /*QWebSettings *webSettings = ui->webView->settings();
-    webSettings->setFontSize(QWebSettings::MinimumFontSize, 12);
-    webSettings->setFontSize(QWebSettings::DefaultFontSize, 12);*/
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(fileName);
-    ui->webView->print(&printer);
+    if (fileName != "") {
+        std::cout << "PDF file exported: " << fileName.toStdString() << std::endl;
+        QPrinter printer;
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(fileName);
+        printer.setOrientation(QPrinter::Portrait);
+        printer.setPaperSize(QPrinter::A4);
+        ui->webView->print(&printer);
+    }
+    else {
+        std::cout << "PDF export canceled." << std::endl;
+    }
 }
 
 void MainWindow::saveAsHtml()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Ulozit jako HTML"), "/home/", tr("HTML file (*.html)"));
-    if (!uHelperModified.saveFile(fileName)) {
-        std::cerr << "Failed saving file " << fileName.toStdString() << std::endl;
-    }
-    else {
-        std::cout << "File saved: " << fileName.toStdString() << std::endl;
+    if (fileName != "") {
+        if (!uHelperModified.saveFile(fileName)) {
+            std::cerr << "Failed saving file: " << fileName.toStdString() << std::endl;
+        }
+        else {
+            std::cout << "File saved: " << fileName.toStdString() << std::endl;
+        }
     }
 }
 

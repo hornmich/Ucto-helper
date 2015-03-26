@@ -8,6 +8,7 @@
 #include <QPrintDialog>
 #include "../common/uctohelper.h"
 #include <QWebSettings>
+#include <QMessageBox>
 
 
 namespace Ui {
