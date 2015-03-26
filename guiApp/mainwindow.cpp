@@ -86,11 +86,37 @@ void MainWindow::print()
 
 void MainWindow::changeSignature(bool isSigned)
 {
+    int docStat = 0;
     uHelperModified = uHelper;
-    uHelperModified.modifySignature(isSigned);
-    uHelperModified.retrieveBillinPeriod();
-    uHelperModified.includeBillingPeriodMonths();
-    uHelperModified.includeBillingPeriodYear();
+    if (!uHelperModified.modifySignature(isSigned)) {
+        std::cerr << "Document does not contain pattern for signature." << std::endl;
+        docStat |= 1 << 0;
+    }
+    if (!uHelperModified.retrieveBillinPeriod()) {
+        std::cerr << "Document does not contain pattern for billing period." << std::endl;
+        docStat |= 1 << 1;
+    }
+    if (!uHelperModified.includeBillingPeriodMonths()) {
+        std::cerr << "Unable to include Biling Period Months." << std::endl;
+        docStat |= 1 << 3;
+    }
+    if (!uHelperModified.includeBillingPeriodYear()) {
+        std::cerr << "Unable to include Biling Period Year." << std::endl;
+        docStat |= 1 << 4;
+    }
+
+    if (docStat != 0) {
+        QMessageBox::warning(this, tr("Ucto helper"),
+                             tr("V dokumentu se nepodarilo najit mista pro upravu.\n"
+                                "Nepokousite se otevrit uz upraveny soubor?\n"
+                                " Chyba: 0x") + QString::number(docStat, 16).toUpper(),
+                             QMessageBox::Ok);
+        ui->btnSave->setEnabled(false);
+        ui->rbNotSigned->setEnabled(false);
+        ui->rbSigned->setEnabled(false);
+    }
+
+
     QString html;
     for (int i = 0; i < uHelperModified.getDocument().getNumLines(); i++) {
         html.append(uHelperModified.getDocument().getLine(i)+"\n");
