@@ -9,6 +9,7 @@
 #include "../common/uctohelper.h"
 #include <QWebSettings>
 #include <QMessageBox>
+#include "configuration.h"
 
 
 namespace Ui {
@@ -27,6 +28,8 @@ private:
     Ui::MainWindow *ui;
     UctoHelper uHelper;
     UctoHelper uHelperModified;
+    QString fileName;
+    Configuration configuration;
     void changeSignature(bool isSigned);
 
 public slots:

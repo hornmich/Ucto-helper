@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btnSaveAsPDF, SIGNAL(clicked()), this, SLOT(saveAsPdf()));
     connect(ui->btnSave, SIGNAL(clicked()), this, SLOT(saveAsHtml()));
     connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
-
+    configuration.loadConfiguration();
 }
 
 MainWindow::~MainWindow()
@@ -22,9 +22,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::openFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Otevrit formular"), QDir::homePath(), tr("Ucto HTML (*.html *.htm)"));
+    fileName = QFileDialog::getOpenFileName(this,
+        tr("Otevrit formular"), configuration.getLastOpenPath(), tr("Ucto HTML (*.html *.htm)"));
     if (fileName != "") {
+        configuration.setLastOpenPath(fileName);
         if (!uHelper.openFile(fileName)) {
             std::cerr << "File: " << fileName.toStdString() << " could not be opened." << std::endl;
         }
@@ -54,8 +55,9 @@ void MainWindow::setNotSigned()
 void MainWindow::saveAsPdf()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Ulozit jako PDF"), "/home/", tr("PDF file (*.pdf)"));
+        tr("Ulozit jako PDF"), configuration.getLastExportPath(), tr("PDF file (*.pdf)"));
     if (fileName != "") {
+        configuration.setLastExportPath(fileName);
         std::cout << "PDF file exported: " << fileName.toStdString() << std::endl;
         QPrinter printer;
         printer.setOutputFormat(QPrinter::PdfFormat);
@@ -72,12 +74,13 @@ void MainWindow::saveAsPdf()
 void MainWindow::saveAsHtml()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Ulozit jako HTML"), "/home/", tr("HTML file (*.html)"));
+        tr("Ulozit jako HTML"), configuration.getLastSavePath(), tr("HTML file (*.html)"));
     if (fileName != "") {
         if (!uHelperModified.saveFile(fileName)) {
             std::cerr << "Failed saving file: " << fileName.toStdString() << std::endl;
         }
         else {
+            configuration.setLastSavePath(fileName);
             std::cout << "File saved: " << fileName.toStdString() << std::endl;
         }
     }
