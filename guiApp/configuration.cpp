@@ -32,34 +32,66 @@ void Configuration::setLastSavePath(const QString &value)
 }
 Configuration::Configuration()
 {
-    fileName = QDir::homePath();
+    fileName = QDir::homePath() + QDir::separator() + ".uctohelper.cfg";
+    lastExportPath = lastOpenPath = lastSavePath = QDir::homePath();
 }
 
 bool Configuration::loadConfiguration()
 {
+    QString line;
+    QString errStr[3] = {"lastOpenPath", "lastSavePath", "lastExportPath"};
+    QString* paths[3] = {&lastOpenPath, &lastSavePath, &lastExportPath};
+    bool retVal = true;
+
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        std::cerr << "UctoDocument.loadDocument: Error while openning file " << fileName.toStdString() << ": " << file.errorString().toStdString() << std::endl;
+        std::cerr << "Configuration.loadConfiguration: Error while openning file " << fileName.toStdString() << ": " << file.errorString().toStdString() << std::endl;
         return false;
     }
 
     QTextStream in(&file);
     in.setCodec("Windows-1250");
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        if (file.error() != 0) {
-            std::cerr << "UctoDocument.loadDocument: Error while reading file " << fileName.toStdString() << ": " << file.errorString().toStdString() << std::endl;
-            file.close();
-            return false;
-        }
-        //mLines.append(line);
-    }
-    file.close();
 
+    for (int i = 0; i < 3; i++) {
+        line = in.readLine();
+        if (line != NULL) {
+            *paths[i] = line;
+        }
+        else {
+            std::cerr << "Configuration.loadConfiguration: failed loading " << errStr[i].toStdString() << std::endl;
+            retVal = false;
+        }
+    }
+
+    file.close();
+    return retVal;
 }
 
 bool Configuration::saveConfiguration()
 {
+    QString errStr[3] = {"lastOpenPath", "lastSavePath", "lastExportPath"};
+    QString* paths[3] = {&lastOpenPath, &lastSavePath, &lastExportPath};
+    bool retVal = true;
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Configuration.saveConfiguration: Error while openning file " << fileName.toStdString() << ": " << file.errorString().toStdString() << std::endl;
+        return false;
+    }
+
+    QTextStream out(&file);
+    out.setCodec("Windows-1250");
+
+    for (int i = 0; i < 3; i++) {
+        out << *paths[i] << "\r\n";
+        if (file.error() != 0) {
+            std::cerr << "Configuration.saveConfiguration:  Error while writting " << errStr[i].toStdString() << ": " << file.errorString().toStdString() << std::endl;
+            retVal =  false;
+        }
+    }
+
+    file.close();
+    return retVal;
 
 }
 

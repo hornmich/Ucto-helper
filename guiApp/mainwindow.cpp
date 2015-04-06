@@ -12,11 +12,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btnSaveAsPDF, SIGNAL(clicked()), this, SLOT(saveAsPdf()));
     connect(ui->btnSave, SIGNAL(clicked()), this, SLOT(saveAsHtml()));
     connect(ui->btnPrint, SIGNAL(clicked()), this, SLOT(print()));
-    configuration.loadConfiguration();
+    if (!configuration.loadConfiguration()) {
+        std::cerr << "MainWindow: configuration loading failed. Default paths will be used." << std::endl;
+    }
 }
 
 MainWindow::~MainWindow()
 {
+    if (!configuration.saveConfiguration()) {
+        std::cerr << "MainWindow: configuration saving failed." << std::endl;
+    }
     delete ui;
 }
 
